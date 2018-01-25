@@ -1,0 +1,2069 @@
+<!DOCTYPE HTML>
+<html>
+<header>
+    <meta charset="utf-8">
+    <title>STRUCTURE ANALYSIS</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="static/css/ace.min.css">
+    <link rel="stylesheet" type="text/css" href="static/css/jquery.loadmask.spin.css"><!--加载动画-->
+    <link rel="stylesheet" type="text/css" href="static/css/chosen.css"><!--多选文本框-->
+    <link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css"><!--图标字体-->
+    <link rel="stylesheet" type="text/css" href="static/css/prettify.css"><!--代码美化-->
+    <link rel="stylesheet" type="text/css" href="static/css/datepicker.css"><!--日期组件-->
+    <link rel="stylesheet" type="text/css" href="static/css/bootstrap-duallistbox.css"><!--复选列表组件-->
+    <style>
+        body {
+            position: relative;
+        }
+
+        .nav>li>a {
+            min-width: 180px;
+        }
+
+        .nav>.active>a {
+            font-weight: 700;
+            color: #563d7c;
+            background-color: transparent;
+        }
+
+        .navbar .navbar-nav>li {
+            border-width: 0!important;
+        }
+
+        .nav>.active>a {
+            font-weight: 700;
+            color: #563d7c;
+            background-color: transparent;
+        }
+
+        .page-header h1 {
+            font-size: 40px;
+            text-align: center;
+            margin: 15px 0;
+        }
+        .yw-error-input {
+            border-color: #DD5A43!important;
+        }
+
+        .loading-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+        }
+
+        .loading-gif {
+            background: url(static/images/loading.gif) center no-repeat #fff;
+            width: 100px;
+            height: 100px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            display: block;
+            border-radius: 5px;
+        }
+
+        .loading-mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            opacity: 0.3;
+            filter: alpha(opacity=30);
+        }
+
+        .gritter-item-wrapper {
+            z-index: 9999;
+            top: 20px;
+            border-radius: 3px;
+            left: 50%;
+            right: auto;
+            min-width: 120px;
+        }
+
+        .gritter-close {
+            position: absolute;
+            border: none;
+            line-height: 16px;
+            cursor: pointer;
+        }
+
+        .gritter-without-image {
+            padding: 0 28px 0 10px;
+        }
+
+        #scrollUp {
+            background-color: #777;
+            color: #eee;
+            font-size: 40px;
+            line-height: 1;
+            text-align: center;
+            text-decoration: none;
+            bottom: 20px;
+            right: 20px;
+            overflow: hidden;
+            width: 46px;
+            height: 46px;
+            border: none;
+            opacity: .8
+        }
+
+        #scrollUp:hover {
+            background-color: #333
+        }
+
+        @media screen and (min-width: 992px) {
+            #scrollUp {
+                bottom:100px
+            }
+        }
+    </style>
+</header>
+<body data-spy="scroll" data-target="#side_menu">
+<div class="navbar navbar-static-top-nav hidden-sm">
+    <div class="container">
+        <div class="navbar-header">
+            <nav class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active open"><a href="./SA.html" class="align-center">STRUCTURE ANALYSIS</a></li>
+                    <li><a href="./HELP.html" class="align-center">HELP</a></li>
+                    <li><a href="./JS3D.html" class="align-center">JS3D</a></li>
+                    <li><a href="./HELP.html" class="align-center">ARCH</a></li>
+                    <li><a href="./JS3D.html" class="align-center">BRIDGE</a></li>
+					<li><a href="./HELP.html" class="align-center">EQUIP</a></li>
+                    <li><a href="./JS3D.html" class="align-center">PIPING</a></li>
+				</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="main-container">
+    <div class="page-header">
+        <h1>STRUCTURE ANALYSIS</h1>
+    </div>
+    <div class="page-content">
+        <div class="row">
+        <div class="col-md-3">
+            <nav class="hidden-print hidden-xs hidden-sm affix-top" id="side_menu">
+                <ul class="nav">
+                    <li>
+                        <a href="#forms">表单元素</a>
+                        <ul class="nav">
+                            <li><a href="#forms-search">搜索组件</a></li>
+                            <li><a href="#forms-edit">编辑表单</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#buttons">按钮</a>
+                        <ul class="nav">
+                            <li><a href="#buttons-layout">按钮布局</a></li>
+                            <li><a href="#buttons-icon">按钮icon</a></li>
+                            <li><a href="#buttons-color">按钮颜色</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#layout">页面布局</a>
+                        <ul class="nav">
+                            <li><a href="#layout-rule">布局规则</a></li>
+                            <li><a href="#layout-tip">提示（tip）</a></li>
+                            <li><a href="#layout-pagination">分页</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#actions">交互事件</a>
+                        <ul class="nav">
+                            <li><a href="#actions-link">链接跳转</a></li>
+                            <li><a href="#actions-notice">提示条</a></li>
+                            <li><a href="#actions-alert">警告框</a></li>
+                            <li><a href="#actions-dialog">INPUT对话框</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#conclusion">RESULT</a>
+                        <ul class="nav">
+                            <li><a href="#conclusion-content">文档说明</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#reference">参考文档</a>
+                        <ul class="nav">
+                            <li><a href="#reference-link">文档链接</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-md-9">
+            <h2><a id="forms"></a>表单元素</h2>
+            <hr>
+            <div class="row" id="forms-search">
+                <div class="widget-box col-sm-10">
+                <div class="widget-header widget-header-flat">
+                    <h4 class="widget-title smaller">搜索组件</h4>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <blockquote>
+                            <p class="lighter line-height-125 text-primary">
+                                搜索条件较少时，标签、搜索框、按钮置于同一行，顺序依次为标签（可选）-条件-文本框-按钮，各组件高度一致并居中对齐。标签视情况添加，一般建议缺省。
+                            </p>
+                        </blockquote>
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <div class="form-group col-sm-12 no-padding-left">
+                                    <label class="control-label">关键词: </label>
+                                    <select class="align-middle inline input-small form-control" name="novel_type" id="novel_type">
+                                        <option value="title">作品名</option>
+                                        <option value="authorname">作者名</option>
+                                        <option value="CBID">CBID</option>
+                                    </select>
+                                    <input class="align-middle inline input-xlarge" type="text" name="novel_search" id="novel_search" value="" placeholder="使用&amp;&amp;分隔进行批量搜索">
+                                    <button type="submit" class="btn btn-info btn-sm">
+                                        <i class="ace-icon fa fa-search"></i>
+                                        搜索
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <blockquote>
+                            <p class="lighter line-height-125 text-primary">
+                                搜索条件较多时，采用合理的网格布局，每个搜索条件由标签和文本框/选择框构成，搜索按钮置于最下排，各个输入框大小应尽可能保持长宽一致。
+                            </p>
+                        </blockquote>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group col-lg-4 col-sm-6 no-padding">
+                                    <label class="control-label align-middle width-20">作品名</label>
+                                    <input type="text" class="align-middle width-70" name="title">
+                                </div>
+                                <div class="form-group col-lg-4 col-sm-6 no-padding">
+                                    <label class="control-label align-middle width-20">CBID</label>
+                                    <input type="text" class="align-middle width-70" name="CBID">
+                                </div>
+                                <div class="form-group col-lg-4 col-sm-6 no-padding">
+                                    <label class="control-label align-middle width-20">作者名</label>
+                                    <input type="text" class="align-middle width-70" name="author">
+                                </div>
+                                <div class="form-group col-lg-4 col-sm-6 no-padding">
+                                    <label class="control-label align-middle width-20">作者ID</label>
+                                    <input type="text" class="align-middle width-70" name="authorID">
+                                </div>
+                                <div class="form-group col-lg-4 col-sm-6 no-padding">
+                                    <label class="control-label align-middle width-20">创世BID</label>
+                                    <input type="text" class="align-middle width-70" name="CSBID">
+                                </div>
+                                <div class="form-group col-lg-4 col-sm-6 no-padding">
+                                    <label class="control-label align-middle width-20">作品状态</label>
+                                    <select class="form-control align-middle inline width-70" name="auditstatus">
+                                        <option value="">不限</option>
+                                        <option value="-1">锁定/屏蔽</option>
+                                        <option value="1">新建</option>
+                                        <option value="10">审核中</option>
+                                        <option value="15">暂不处理</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <button type="submit" class="btn btn-info btn-sm">
+                                    <i class="ace-icon fa fa-search"></i>
+                                    搜索
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space"></div>
+                        <blockquote>
+                            <p class="lighter line-height-125 text-primary">
+                                标签和输入框不在一行的格式
+                            </p>
+                        </blockquote>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label>作品名</label>
+                                    <input type="text" class="align-middle width-100" name="title">
+                                </div>
+                                <div class="form-group">
+                                    <label>站点</label>
+                                    <select class="form-control input-sm" name="site">
+                                        <option value="1">创世</option>
+                                        <option value="2">云起</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>一级分类</label>
+                                            <select name="Subjectid" class="form-control input-sm">
+                                                <option value="20005" selected>奇幻</option>
+                                                <option value="20001">玄幻</option>
+                                                <option value="20014">仙侠</option>
+                                                <option value="20010">武侠</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>二级分类</label>
+                                            <select name="Contentid" class="form-control input-sm">
+                                                <option value="20003">异世大陆</option>
+                                                <option value="20002" selected>东方玄幻</option>
+                                                <option value="20004">高武世界</option>
+                                                <option value="20082">王朝争霸</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-info btn-sm">
+                                        <i class="ace-icon fa fa-search"></i>
+                                        搜索
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="space-16"></div>
+            <div class="row" id="forms-edit">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">编辑表单</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <ul>
+                                    <li class="lighter line-height-125 text-primary">
+                                        新增/编辑数据使用的表单，每行做多包括一个标签和输入框，各个输入框大小应尽可能保持长宽一致，上下对齐。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        如果用到checkbox或者radio，需使用Ace Admin的组件，因为浏览器原生的组件点击区域太小不方便使用。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        较短的输入提示，使用placeholder属性，也可以考虑使用js的tooltip插件。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        表单提交尽可能使用ajax的方法，避免全页面刷新。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        时间长的表单提交要有加载动画，以防止出现假死状态。需要避免用户重复点击的地方，点击后按钮变成disabled样式。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        表单提交前后有错误检测，出现输入错误的表单元素边框变成红色警告色，错误信息显示在输入框下方，同时页面聚焦到第一个有错误输入框。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        文本域的rows值合理，一般设为5行。
+                                    </li>
+                                </ul>
+                            </blockquote>
+                            <div class="row" id="main">
+                                <div class="col-sm-9 no-padding">
+                                    <div class="form-group col-xs-12">
+                                        <label class="control-label col-sm-2">作品名</label>
+                                        <div class="col-md-6">
+                                            <input type="text" class="width-100 input-sm" name="title" data-rel="tooltip"
+                                                   data-placement="bottom" data-original-title="15字以内不能特殊字符和标点" value="金瓶梅">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button type="button" id="check_title" class="btn btn-info btn-xs">
+                                                检测作品名
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <label class="control-label col-sm-2">总字数</label>
+                                        <div class="col-md-6">
+                                            <input type="text" class="width-100 input-sm" name="wordCount" value="1024" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <label class="control-label col-sm-2">站点</label>
+                                        <div class="col-md-6">
+                                            <select class="form-control input-sm" name="site">
+                                                <option value="1">创世</option>
+                                                <option value="2">云起</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <label class="control-label col-sm-2">作品类别</label>
+                                        <div class="col-md-3">
+                                            <select name="Subjectid" class="form-control input-sm">
+                                                <option value="20005" selected>奇幻</option>
+                                                <option value="20001">玄幻</option>
+                                                <option value="20014">仙侠</option>
+                                                <option value="20010">武侠</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select name="Contentid" class="form-control input-sm">
+                                                <option value="20003">异世大陆</option>
+                                                <option value="20002" selected>东方玄幻</option>
+                                                <option value="20004">高武世界</option>
+                                                <option value="20082">王朝争霸</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <label class="control-label align-middle col-sm-2">销售意向</label>
+                                        <div class="col-md-6">
+                                            <div class="form-group radio-inline no-padding">
+                                                <label>
+                                                    <input name="salePurpose" type="radio" class="ace" checked>
+                                                    <span class="lbl"> 单订</span>
+                                                </label>
+                                            </div>
+                                            <div class="form-group radio-inline">
+                                                <label>
+                                                    <input name="salePurpose" type="radio" class="ace">
+                                                    <span class="lbl"> 包月</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <label class="control-label align-middle col-sm-2">折扣百分比</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" id="ace_spinner">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <label class="control-label align-middle col-sm-2">售价</label>
+                                        <div class="col-sm-4">
+                                            <span class="input-icon input-icon-right no-padding col-xs-12">
+												<input type="text" class="width-100 input-sm" />
+												<span class="ace-icon">元</span>
+											</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <label class="control-label align-middle col-sm-2">打折期限</label>
+                                        <div class="col-md-8">
+                                            <div class="input-daterange input-group">
+                                                <input type="text" class="input-sm form-control" name="start" />
+                                                <span class="input-group-addon">
+                                                        <i class="fa fa-exchange"></i>
+                                                    </span>
+                                                <input type="text" class="input-sm form-control" name="end" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <label class="control-label align-middle col-sm-2">发布时间</label>
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <input class="form-control date-picker input-sm" type="text"
+                                                       data-date-format="dd-mm-yyyy" />
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar bigger-110"></i>
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <label class="control-label align-middle col-sm-2">封面</label>
+                                        <div class="col-md-6">
+                                            <input type="file" id="image_file">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <label class="control-label align-middle col-sm-2">标签</label>
+                                        <div class="col-md-6">
+                                            <select multiple="" class="chosen-select form-control tag-input-style"
+                                                    data-placeholder="点击选择标签...">
+                                                <optgroup label=风格>
+                                                    <option value="1">轻松</option>
+                                                    <option value="2" selected>爆笑</option>
+                                                    <option value="3">虐恋</option>
+                                                    <option value="4">治愈</option>
+                                                    <option value="5">恶搞</option>
+                                                    <option value="6" selected>开放式结局</option>
+                                                    <option value="7">正剧</option>
+                                                    <option value="8" selected>生死大爱</option>
+                                                    <option value="9">温馨清水</option>
+                                                    <option value="10">囧文</option>
+                                                    <option value="11">小白</option>
+                                                    <option value="12">宠文</option>
+                                                    <option value="13">唯美</option>
+                                                    <option value="14" selected>暧昧</option>
+                                                    <option value="15" selected>励志</option>
+                                                </optgroup>
+                                                <optgroup label=故事元素>
+                                                    <option value="16">豪门</option>
+                                                    <option value="17">权谋</option>
+                                                    <option value="18">失忆</option>
+                                                    <option value="19">异国情缘</option>
+                                                    <option value="20">江湖恩怨</option>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <label class="control-label col-sm-2">站点</label>
+                                        <div class="col-md-10">
+                                            <select multiple="multiple" size="10" id="duallist">
+                                                <option value="option1">站点 1</option>
+                                                <option value="option2">站点 2</option>
+                                                <option value="option3" selected="selected">站点 3</option>
+                                                <option value="option4">站点 4</option>
+                                                <option value="option5">站点 5</option>
+                                                <option value="option6" selected="selected">站点 6</option>
+                                                <option value="option7">站点 7</option>
+                                                <option value="option8">站点 8</option>
+                                                <option value="option9">站点 9</option>
+                                                <option value="option0">站点 10</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <label class="control-label col-sm-2">作品简介</label>
+                                        <div class="col-md-6">
+                                            <textarea class="width-100" id="content" placeholder="20-300字，必填" rows="5"></textarea>
+                                            <div class="col-xs-12 no-padding" id="content_error" style="display: none">
+                                                <p class="text-warning bigger-110 red">
+                                                    <i class="ace-icon fa fa-exclamation-triangle"></i>
+                                                    <span>作品简介不能为空</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <div class="col-xs-offset-2 col-md-6">
+                                            <button type="button" class="btn btn-success btn-sm" id="save">
+                                                <i class="ace-icon fa fa-check"></i>
+                                                保 存
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    部分组件js代码参考
+                                </p>
+                            </blockquote>
+                            <pre class="prettyprint linenums">
+// 输入框提示条
+$('[data-rel=tooltip]').tooltip({
+    container: 'body',
+    trigger: 'focus'
+});
+
+// 数字选择器
+$('#ace_spinner').ace_spinner({
+    value: 0,
+    min: 0,
+    max: 100,
+    step: 10,
+    on_sides: true,
+    icon_up:'ace-icon fa fa-plus smaller-70',
+    icon_down: 'ace-icon fa fa-minus smaller-70',
+    btn_up_class:'btn-info' ,
+    btn_down_class:'btn-info'
+});
+
+// 文件选择
+$('#image_file').ace_file_input({
+    no_file:'请选择一张jpg/png格式的图片',
+    btn_choose: '选择',
+    btn_change: '更换',
+    droppable: true,
+    whitelist: 'png|jpg|jpeg'
+});
+
+// 日期选择器
+$('.date-picker').datepicker({
+    autoclose: true,
+    todayHighlight: true,
+    language: 'zh-CN'
+})
+.next().on(ace.click_event, function() { // 图标点击弹出选择器
+    $(this).prev().focus();
+});
+
+// 日期时间段选择器
+$('.input-daterange').datepicker({
+    autoclose: true,
+    todayHighlight: true,
+    language: 'zh-CN'
+});
+
+// 词条多选
+$('.chosen-select').chosen({allow_single_deselect: true});
+
+// 双列多选列表
+$('#duallist').bootstrapDualListbox({
+    filterTextClear: '显示所有',
+    filterPlaceHolder: '过滤条件',
+    infoText: '显示全部{0}项',
+    infoTextFiltered: '&lt;span class="label label-purple label-lg"&gt;筛选结果&lt;/span&gt;',
+    infoTextEmpty: '空列表',
+    moveSelectedLabel: '选择',
+    moveAllLabel: '选择所有',
+    removeSelectedLabel: '移除选择',
+    removeAllLabel: '移除所有选择',
+    buttonClass: 'btn-white btn-info btn-bold'
+});
+
+// 开始加载动画，默认在当前iframe上
+mask();
+
+// 结束加载动画
+unmask();
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2><a id="buttons"></a>按钮</h2>
+            <hr>
+            <div class="row" id="buttons-layout">
+                <div class="widget-box col-xs-12">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">按钮布局</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    一般情况下，多种操作按钮并排与同一行，按钮较多、空间狭小（如表格操作列大于等于3时）时使用按钮组。
+                                </p>
+                                <p class="lighter line-height-125 text-primary">
+                                    按钮按常用程度、语序排列。例如，新增>编辑>删除，上传>下载。
+                                </p>
+                            </blockquote>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <button type="button" class="btn btn-success btn-sm">
+                                        <i class="ace-icon fa fa-plus"></i>
+                                        新增章节
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-sm">
+                                        <i class="ace-icon fa fa-edit"></i>
+                                        批量编辑
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-sm">
+                                        <i class="ace-icon fa fa-trash-o"></i>
+                                        批量删除
+                                    </button>
+                                    <div class="btn-group">
+                                        <button data-toggle="dropdown" class="btn btn-info dropdown-toggle btn-sm">
+                                            操作
+                                            <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li><a>刷新</a></li>
+                                            <li><a>编辑</a></li>
+                                            <li><a>屏蔽</a></li>
+                                            <li><a>删除</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-16"></div>
+            <div class="row" id="buttons-icon">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">按钮icon</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    为了区分按钮的功能，可以对按钮增加图标，图标置于文字之前。如果不确认使用什么icon建议不加，否则会显得很混乱。主要情况如下供参考。
+                                </p>
+                            </blockquote>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <button type="button" class="btn btn-success btn-sm">
+                                        <i class="ace-icon fa fa-floppy-o"></i>
+                                        保存
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-sm">
+                                        <i class="ace-icon fa fa-plus"></i>
+                                        添加
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-sm">
+                                        <i class="ace-icon fa fa-edit"></i>
+                                        编辑
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-sm">
+                                        <i class="ace-icon fa fa-trash-o"></i>
+                                        删除
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-sm">
+                                        <i class="ace-icon fa fa-cloud-upload"></i>
+                                        上传
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-sm">
+                                        <i class="ace-icon fa fa-cloud-download"></i>
+                                        下载
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-sm">
+                                        <i class="ace-icon fa fa-backward"></i>
+                                        后退
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-sm">
+                                        <i class="ace-icon fa fa-forward"></i>
+                                        前进
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="space-6"></div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <button type="button" class="btn btn-info btn-sm">
+                                        <i class="ace-icon fa fa-search"></i>
+                                        搜索
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-sm">
+                                        <i class="ace-icon fa fa-refresh"></i>
+                                        刷新
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-sm">
+                                        <i class="ace-icon fa fa-check"></i>
+                                        确认
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-white">
+                                        <i class="ace-icon fa fa-times"></i>
+                                        取消
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-sm">
+                                        <i class="ace-icon fa fa-undo"></i>
+                                        重置
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-sm">
+                                        <i class="ace-icon fa fa-ban"></i>
+                                        屏蔽
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-sm">
+                                        <i class="ace-icon fa fa-cog"></i>
+                                        配置
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-sm">
+                                        <i class="ace-icon fa fa-question"></i>
+                                        检测
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-16"></div>
+            <div class="row" id="buttons-color">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">按钮颜色</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    危险性的操作、不可恢复的操作按钮采用警告色红色
+                                </p>
+                            </blockquote>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <button type="button" class="btn btn-danger btn-sm">
+                                        屏蔽
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-sm">
+                                        删除
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-sm">
+                                        封禁
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="space-12"></div>
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    文档新增、编辑等影响数据库内容的操作采用绿色
+                                </p>
+                            </blockquote>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <button type="button" class="btn btn-success btn-sm">
+                                        新增
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-sm">
+                                        编辑
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-sm">
+                                        创建
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="space-12"></div>
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    点击后不会有任何影响的操作和表格最后一栏操作中的非按钮组按钮使用白色。
+                                </p>
+                            </blockquote>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <button type="button" class="btn btn-primary btn-white">
+                                        取消
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-white">
+                                        关闭
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="space-12"></div>
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    其他一般情况使用淡蓝色
+                                </p>
+                            </blockquote>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <button type="button" class="btn btn-info btn-sm">
+                                        确认
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-sm">
+                                        搜索
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-sm">
+                                        刷新
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2><a id="layout"></a>页面布局</h2>
+            <hr>
+            <div class="row" id="layout-rule">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">布局规则</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <ul>
+                                    <li class="lighter line-height-125 text-primary">
+                                        页面内容自上至下布局，顺序依次为：页面标题->页面介绍->(编辑表单|(搜索框|操作按钮)->表格数据)->备注。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        每行内容清晰、职责单一、尽可能不罗列过多内容。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        列表页跳转至详情页，详情页跳转至编辑页等情况，一般在本页跳转不新开页面。跳转后的页面应添加返回按钮，位于页头靠左。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        编辑操作，如新增、编辑、导出等按钮，位于分页数据上方，按钮居右并排显示。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        当前内容较多时，应对不同类的信息分模块。
+                                    </li>
+                                </ul>
+                            </blockquote>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <a class="btn btn-sm btn-info" href="#">
+                                                <i class="ace-icon fa fa-backward"></i>
+                                                返回列表
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <h2 class="header smaller">
+                                        作品详情
+                                    </h2>
+                                    <div class="col-xs-12">
+                                        <div class="row">
+                                            <p>页面的一些简介会出现在页首，以告诉使用者一些操作规范、数据格式等。</p>
+                                            <p>不过也可能什么都没有。</p>
+                                        </div>
+                                    </div>
+                                    <h4 class="header smaller blue">
+                                        <i class="ace-icon fa fa-info"></i>
+                                        基本信息
+                                    </h4>
+                                    <div class="col-xs-12 no-padding">
+                                        <div class="form-group col-sm-6 no-padding">
+                                            <label class="control-label col-sm-2 no-padding-left">作品名</label>
+                                            <div class="col-md-8 no-padding-left">
+                                                <input type="text" class="width-100 input-sm" value="圣经" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-sm-6 no-padding">
+                                            <label class="control-label col-sm-2 no-padding-left">CBID</label>
+                                            <div class="col-md-8 no-padding-left">
+                                                <input type="text" class="width-100 input-sm" value="12345678906543217" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 no-padding">
+                                        <div class="form-group col-sm-6 no-padding">
+                                            <label class="control-label col-sm-2 no-padding-left">作者名</label>
+                                            <div class="col-md-8 no-padding-left">
+                                                <input type="text" class="width-100 input-sm" value="康斯坦丁" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-sm-6 no-padding">
+                                            <label class="control-label col-sm-2 no-padding-left">作者ID</label>
+                                            <div class="col-md-8 no-padding-left">
+                                                <input type="text" class="width-100 input-sm" value="9527" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-12 no-padding">
+                                        <label class="control-label col-sm-1 no-padding-left">封面</label>
+                                        <div class="col-md-8 no-padding-left">
+                                            <img src="static/images/front_pic.jpg" class="img-thumbnail">
+                                        </div>
+                                    </div>
+                                    <h4 class="header smaller blue">
+                                        <i class="ace-icon fa fa-book"></i>
+                                        章节详情
+                                    </h4>
+                                    <div class="form-group col-xs-12 no-padding-left">
+                                        <input type="text" class="align-middle width-40 input-sm">
+                                        <button type="button" class="btn btn-info btn-xs">
+                                            <i class="ace-icon fa fa-search"></i>
+                                            搜索
+                                        </button>
+                                        <div class="row pull-right">
+                                            <button type="button" class="btn btn-success btn-xs">
+                                                <i class="ace-icon fa fa-plus"></i>
+                                                新增章节
+                                            </button>
+                                            <button type="button" class="btn btn-info btn-xs">
+                                                <i class="ace-icon fa fa-cloud-download"></i>
+                                                导出数据
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="row">
+                                            <table class="table table-striped table-bordered table-hover no-margin">
+                                                <tr>
+                                                    <th class="align-center align-middle">
+                                                        <label class="pos-rel">
+                                                            <input type="checkbox" class="ace">
+                                                            <span class="lbl"></span>
+                                                        </label>
+                                                    </th>
+                                                    <th class="align-center align-middle">卷名</th>
+                                                    <th class="align-center align-middle">章节标题</th>
+                                                    <th class="align-center align-middle">章节ID</th>
+                                                    <th class="align-center align-middle">章节排序</th>
+                                                    <th class="align-center align-middle">是否VIP</th>
+                                                    <th class="align-center align-middle">发布时间</th>
+                                                    <th class="align-center align-middle">操作</th>
+                                                </tr>
+                                                <tr>
+                                                    <td class="align-center align-middle">
+                                                        <label class="pos-rel">
+                                                            <input type="checkbox" class="ace">
+                                                            <span class="lbl"></span>
+                                                        </label>
+                                                    </td>
+                                                    <td class="align-middle">创世记</td>
+                                                    <td class="align-middle">创造万物</td>
+                                                    <td class="align-middle">98765432101234567</td>
+                                                    <td class="align-middle">0</td>
+                                                    <td class="align-middle">否</td>
+                                                    <td class="align-middle">2006-06-06 23:15:46</td>
+                                                    <td class="align-center">
+                                                        <div class="btn-group">
+                                                            <button data-toggle="dropdown" class="btn btn-info dropdown-toggle btn-sm">
+                                                                操作
+                                                                <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                                <li><a>编辑</a></li>
+                                                                <li><a>屏蔽</a></li>
+                                                                <li><a>删除</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="align-center align-middle">
+                                                        <label class="pos-rel">
+                                                            <input type="checkbox" class="ace">
+                                                            <span class="lbl"></span>
+                                                        </label>
+                                                    </td>
+                                                    <td class="align-middle">创世记</td>
+                                                    <td class="align-middle">诱惑与堕落</td>
+                                                    <td class="align-middle">98765432101234567</td>
+                                                    <td class="align-middle">0</td>
+                                                    <td class="align-middle">否</td>
+                                                    <td class="align-middle">2006-06-06 23:15:46</td>
+                                                    <td class="align-center">
+                                                        <div class="btn-group">
+                                                            <button data-toggle="dropdown" class="btn btn-info dropdown-toggle btn-sm">
+                                                                操作
+                                                                <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                                <li><a>编辑</a></li>
+                                                                <li><a>屏蔽</a></li>
+                                                                <li><a>删除</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="align-center align-middle">
+                                                        <label class="pos-rel">
+                                                            <input type="checkbox" class="ace">
+                                                            <span class="lbl"></span>
+                                                        </label>
+                                                    </td>
+                                                    <td class="align-middle">创世记</td>
+                                                    <td class="align-middle">该隐与亚伯</td>
+                                                    <td class="align-middle">98765432101234567</td>
+                                                    <td class="align-middle">0</td>
+                                                    <td class="align-middle">否</td>
+                                                    <td class="align-middle">2006-06-06 23:15:46</td>
+                                                    <td class="align-center">
+                                                        <div class="btn-group">
+                                                            <button data-toggle="dropdown" class="btn btn-info dropdown-toggle btn-sm">
+                                                                操作
+                                                                <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                                <li><a>编辑</a></li>
+                                                                <li><a>屏蔽</a></li>
+                                                                <li><a>删除</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="align-center align-middle">
+                                                        <label class="pos-rel">
+                                                            <input type="checkbox" class="ace">
+                                                            <span class="lbl"></span>
+                                                        </label>
+                                                    </td>
+                                                    <td class="align-middle">创世记</td>
+                                                    <td class="align-middle">塞特与他的后裔</td>
+                                                    <td class="align-middle">98765432101234567</td>
+                                                    <td class="align-middle">0</td>
+                                                    <td class="align-middle">否</td>
+                                                    <td class="align-middle">2006-06-06 23:15:46</td>
+                                                    <td class="align-center">
+                                                        <div class="btn-group">
+                                                            <button data-toggle="dropdown" class="btn btn-info dropdown-toggle btn-sm">
+                                                                操作
+                                                                <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                                <li><a>编辑</a></li>
+                                                                <li><a>屏蔽</a></li>
+                                                                <li><a>删除</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="align-center align-middle">
+                                                        <label class="pos-rel">
+                                                            <input type="checkbox" class="ace">
+                                                            <span class="lbl"></span>
+                                                        </label>
+                                                    </td>
+                                                    <td class="align-middle">创世记</td>
+                                                    <td class="align-middle">罪遍满全地与大洪水</td>
+                                                    <td class="align-middle">98765432101234567</td>
+                                                    <td class="align-middle">0</td>
+                                                    <td class="align-middle">否</td>
+                                                    <td class="align-middle">2006-06-06 23:15:46</td>
+                                                    <td class="align-center">
+                                                        <div class="btn-group">
+                                                            <button data-toggle="dropdown" class="btn btn-info dropdown-toggle btn-sm">
+                                                                操作
+                                                                <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                                <li><a>编辑</a></li>
+                                                                <li><a>屏蔽</a></li>
+                                                                <li><a>删除</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <ul class="pagination pull-right">
+                                                <li><span>5 条记录 1/1 页</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="row">
+                                            <p class="grey">注：一些注意项位于当前页面的最下方，使用灰色字体。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-16"></div>
+            <div class="row" id="layout-tip">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">提示（tip）</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <ul>
+                                    <li class="lighter line-height-125 text-primary">
+                                        所有提示单起一行与其他组件左对齐，一般使用p标签置于页头标题后。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        需要引起人十分注意的提示可以采用惊醒色、使用ace自带的alert等方法。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        需要弱化的可以加一个grey类，放在操作按钮、表单等的后面。
+                                    </li>
+                                </ul>
+                            </blockquote>
+                            <div class="col-xs-12">
+                                <h2 class="header smaller">
+                                    操作页面
+                                </h2>
+                                <p>页面的一些简介会出现在页首，以告诉使用者一些操作规范、数据格式等。</p>
+                                <p>另外一条提示也用p标签。</p>
+                                <div class="alert alert-warning">
+                                    <strong>注意：</strong>搜索条件不能为空！
+                                </div>
+                                <div class="form-group col-xs-12 no-padding-left">
+                                    <input type="text" class="align-middle width-40 input-sm">
+                                    <button type="button" class="btn btn-info btn-xs">
+                                        <i class="ace-icon fa fa-search"></i>
+                                        搜索
+                                    </button>
+                                </div>
+                                <p class="grey">注：弱化的提示采用灰色字体放在靠下的位置。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-16"></div>
+            <div class="row" id="layout-pagination">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">分页</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <ul>
+                                    <li class="lighter line-height-125 text-primary">
+                                        分页数据一般使用表格呈现，列标题居中，列内容居左。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        如果存在勾选行的批量操作，需使用Ace Admin的checkbox组件，复选框放在第一列，“勾选所有”位于最上方列表头单元格。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        页面数据尽可能使用ajax的方法加载。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        分页放置于页面内容的底部居右，每页显示数量应在20～200之间，一般每页为20条数据，可根据用户的实际使用场景增加单页显示数量。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        页码组件采用如下示例中的样式，具体使用方法请参考“编辑管理-作品管理-作品编辑”处的代码。未来会改成带跳页的组件，暂时还没有该组件。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        数据列非常多的情况，建议不用单纯的表格呈现，否则每列的数据都在狭窄的空间内，既丑又难用。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        状态值可考虑使用带色彩的小旗，色彩视情况而定，一般无效、删除、封禁等状态使用红色。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        表格列数较多的时候，设置合适的单元格和表格总宽度，同时增加一个横向滚动条。
+                                    </li>
+                                </ul>
+                            </blockquote>
+                            <div class="row">
+                                <div class="col-xs-12" style="overflow:auto">
+                                    <table class="table table-striped table-bordered table-hover no-margin" style="min-width:900px">
+                                        <tr>
+                                            <th class="align-center align-middle">
+                                                <label class="pos-rel" title="全选">
+                                                    <input type="checkbox" class="ace" id="check_all">
+                                                    <span class="lbl"></span>
+                                                </label>
+                                            </th>
+                                            <th class="align-center align-middle">作品名</th>
+                                            <th class="align-center align-middle">CBID</th>
+                                            <th class="align-center align-middle">首发站点</th>
+                                            <th class="align-center align-middle">作者名</th>
+                                            <th class="align-center align-middle">总字数</th>
+                                            <th class="align-center align-middle">连载状态</th>
+                                            <th class="align-center align-middle">更新时间</th>
+                                            <th class="align-center align-middle">操作</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="align-center align-middle">
+                                                <label class="pos-rel">
+                                                    <input type="checkbox" class="ace">
+                                                    <span class="lbl"></span>
+                                                </label>
+                                            </td>
+                                            <td class="align-middle">金瓶梅</td>
+                                            <td class="align-middle">98765432101234567</td>
+                                            <td class="align-middle">起点中文网</td>
+                                            <td class="align-middle">兰陵笑笑生</td>
+                                            <td class="align-middle">10241024</td>
+                                            <td class="align-middle">
+                                                <span class="label label-primary arrowed-in-right label-lg">
+                                                    <b>连载中</b>
+                                                </span>
+                                            </td>
+                                            <td class="align-middle">2006-06-06 23:15:46</td>
+                                            <td class="align-center">
+                                                <div class="btn-group">
+                                                <button data-toggle="dropdown" class="btn btn-info dropdown-toggle btn-sm">
+                                                    操作
+                                                    <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li><a>编辑</a></li>
+                                                    <li><a>屏蔽</a></li>
+                                                    <li><a>删除</a></li>
+                                                </ul>
+                                            </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="align-center align-middle">
+                                                <label class="pos-rel">
+                                                    <input type="checkbox" class="ace">
+                                                    <span class="lbl"></span>
+                                                </label>
+                                            </td>
+                                            <td class="align-middle">银瓶梅</td>
+                                            <td class="align-middle">98765432101234567</td>
+                                            <td class="align-middle">起点中文网</td>
+                                            <td class="align-middle">兰陵笑笑生</td>
+                                            <td class="align-middle">10241024</td>
+                                            <td class="align-middle">
+                                                <span class="label label-primary arrowed-in-right label-lg">
+                                                    <b>连载中</b>
+                                                </span>
+                                            </td>
+                                            <td class="align-middle">2006-06-06 23:15:46</td>
+                                            <td class="align-center">
+                                                <div class="btn-group">
+                                                    <button data-toggle="dropdown" class="btn btn-info dropdown-toggle btn-sm">
+                                                        操作
+                                                        <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-right">
+                                                        <li><a>编辑</a></li>
+                                                        <li><a>屏蔽</a></li>
+                                                        <li><a>删除</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="align-center align-middle">
+                                                <label class="pos-rel">
+                                                    <input type="checkbox" class="ace">
+                                                    <span class="lbl"></span>
+                                                </label>
+                                            </td>
+                                            <td class="align-middle">铜瓶梅</td>
+                                            <td class="align-middle">98765432101234567</td>
+                                            <td class="align-middle">起点中文网</td>
+                                            <td class="align-middle">兰陵笑笑生</td>
+                                            <td class="align-middle">10241024</td>
+                                            <td class="align-middle">
+                                                <span class="label label-primary arrowed-in-right label-lg">
+                                                    <b>连载中</b>
+                                                </span>
+                                            </td>
+                                            <td class="align-middle">2006-06-06 23:15:46</td>
+                                            <td class="align-center">
+                                                <div class="btn-group">
+                                                    <button data-toggle="dropdown" class="btn btn-info dropdown-toggle btn-sm">
+                                                        操作
+                                                        <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-right">
+                                                        <li><a>编辑</a></li>
+                                                        <li><a>屏蔽</a></li>
+                                                        <li><a>删除</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="align-center align-middle">
+                                                <label class="pos-rel">
+                                                    <input type="checkbox" class="ace">
+                                                    <span class="lbl"></span>
+                                                </label>
+                                            </td>
+                                            <td class="align-middle">铁瓶梅</td>
+                                            <td class="align-middle">98765432101234567</td>
+                                            <td class="align-middle">起点中文网</td>
+                                            <td class="align-middle">兰陵笑笑生</td>
+                                            <td class="align-middle">10241024</td>
+                                            <td class="align-middle">
+                                                <span class="label label-danger arrowed-in-right label-lg">
+                                                    <b>封禁</b>
+                                                </span>
+                                            </td>
+                                            <td class="align-middle">2006-06-06 23:15:46</td>
+                                            <td class="align-center">
+                                                <div class="btn-group">
+                                                    <button data-toggle="dropdown" class="btn btn-info dropdown-toggle btn-sm">
+                                                        操作
+                                                        <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-right">
+                                                        <li><a>编辑</a></li>
+                                                        <li><a>屏蔽</a></li>
+                                                        <li><a>删除</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="align-center align-middle">
+                                                <label class="pos-rel">
+                                                    <input type="checkbox" class="ace">
+                                                    <span class="lbl"></span>
+                                                </label>
+                                            </td>
+                                            <td class="align-middle">铝瓶梅</td>
+                                            <td class="align-middle">98765432101234567</td>
+                                            <td class="align-middle">起点中文网</td>
+                                            <td class="align-middle">兰陵笑笑生</td>
+                                            <td class="align-middle">10241024</td>
+                                            <td class="align-middle">
+                                                <span class="label label-default arrowed-in-right label-lg">
+                                                    <b>已完结</b>
+                                                </span>
+                                            </td>
+                                            <td class="align-middle">2006-06-06 23:15:46</td>
+                                            <td class="align-center">
+                                                <div class="btn-group">
+                                                    <button data-toggle="dropdown" class="btn btn-info dropdown-toggle btn-sm">
+                                                        操作
+                                                        <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-right">
+                                                        <li><a>编辑</a></li>
+                                                        <li><a>屏蔽</a></li>
+                                                        <li><a>删除</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-xs-12">
+                                    <ul class="pagination pull-right">
+                                        <li><span>240 条记录 6/12 页</span></li>
+                                        <li><a href="#">上一页</a></li>
+                                        <li><a href="#">下一页</a></li>
+                                        <li><a href="#">第一页</a></li>
+                                        <li><a href="#">上5页</a></li>
+                                        <li><span class="current">6</span></li>
+                                        <li><a href="#">&nbsp;7&nbsp;</a></li>
+                                        <li><a href="#">&nbsp;8&nbsp;</a></li>
+                                        <li><a href="#">&nbsp;9&nbsp;</a></li>
+                                        <li><a href="#">&nbsp;10&nbsp;</a></li>
+                                        <li><a href="#">下5页</a></li>
+                                        <li><a href="#">最后一页</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="space-16"></div>
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    没有搜索结果的时候，应该展示空状态文字。
+                                </p>
+                            </blockquote>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <table class="table table-striped table-bordered table-hover no-margin">
+                                        <tr>
+                                            <th class="align-center align-middle">
+                                                <label class="block">
+                                                    <input type="checkbox" disabled class="ace">
+                                                    <span class="lbl"></span>
+                                                </label>
+                                            </th>
+                                            <th class="align-center align-middle">作品名</th>
+                                            <th class="align-center align-middle">CBID</th>
+                                            <th class="align-center align-middle">首发站点</th>
+                                            <th class="align-center align-middle">作者名</th>
+                                            <th class="align-center align-middle">总字数</th>
+                                            <th class="align-center align-middle">更新时间</th>
+                                            <th class="align-center align-middle">操作</th>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" class="align-center align-middle bg-warning">
+                                                <span class="">您搜索的数据不存在，请确认搜索条件是否正确！</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2><a id="actions"></a>交互事件</h2>
+            <hr>
+            <div class="row" id="actions-link">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">链接跳转</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    链接一般在本页跳转，跳转后的页面应包含返回上页的按钮/链接。某些情况考虑打开新页面：数据列表中打开某一项、新增操作。
+                                <p/>
+                            </blockquote>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="tabbable">
+                                        <ul class="nav nav-tabs" id="tabPage">
+                                            <li class="active">
+                                                <a data-toggle="tab" href="#menu-list" id="tab-list">
+                                                    作品列表
+                                                    <button type="button" class="close" style="font-size:16px;float: none;">
+                                                        <i class="ace-icon fa fa-times"></i>
+                                                    </button>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a data-toggle="tab" href="#menu-detail1" id="tab-detail1" style="display: none">
+                                                    新增作品
+                                                    <button type="button" class="close" style="font-size:16px;float: none;">
+                                                        <i class="ace-icon fa fa-times"></i>
+                                                    </button>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a data-toggle="tab" href="#menu-detail2" id="tab-detail2" style="display: none">
+                                                    物种起源
+                                                    <button type="button" class="close" style="font-size:16px;float: none;">
+                                                        <i class="ace-icon fa fa-times"></i>
+                                                    </button>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a data-toggle="tab" href="#menu-detail3" id="tab-detail3" style="display: none">
+                                                    倚天屠龙记
+                                                    <button type="button" class="close" style="font-size:16px;float: none;">
+                                                        <i class="ace-icon fa fa-times"></i>
+                                                    </button>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a data-toggle="tab" href="#menu-detail4" id="tab-detail4" style="display: none">
+                                                    甄嬛传
+                                                    <button type="button" class="close" style="font-size:16px;float: none;">
+                                                        <i class="ace-icon fa fa-times"></i>
+                                                    </button>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="tab-content" id="tabContent">
+                                        <div id="menu-list" class="tab-pane active">
+                                            <div class="form-group col-xs-12 no-padding-left">
+                                                <div class="row pull-right">
+                                                    <button class="btn btn-success btn-xs yw-tab-btn" data-tid="1">
+                                                        <i class="ace-icon fa fa-plus"></i>
+                                                        新增作品
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <div class="row">
+                                                    <table class="table table-striped table-bordered table-hover no-margin">
+                                                        <tr>
+                                                            <th class="align-center align-middle">
+                                                                <label class="pos-rel">
+                                                                    <input type="checkbox" class="ace">
+                                                                    <span class="lbl"></span>
+                                                                </label>
+                                                            </th>
+                                                            <th class="align-center align-middle">作品类别</th>
+                                                            <th class="align-center align-middle">作品名</th>
+                                                            <th class="align-center align-middle">CBID</th>
+                                                            <th class="align-center align-middle">作者名</th>
+                                                            <th class="align-center align-middle">是否VIP</th>
+                                                            <th class="align-center align-middle">发布时间</th>
+                                                            <th class="align-center align-middle">操作</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="align-center align-middle">
+                                                                <label class="pos-rel">
+                                                                    <input type="checkbox" class="ace">
+                                                                    <span class="lbl"></span>
+                                                                </label>
+                                                            </td>
+                                                            <td class="align-middle">创世</td>
+                                                            <td class="align-middle">物种起源</td>
+                                                            <td class="align-middle">98765432101234567</td>
+                                                            <td class="align-middle">0</td>
+                                                            <td class="align-middle">否</td>
+                                                            <td class="align-middle">2006-06-06 23:15:46</td>
+                                                            <td class="align-center">
+                                                                <button data-toggle="dropdown" class="btn btn-primary btn-white" data-tid="2">
+                                                                    <i class="ace-icon fa fa-edit"></i>
+                                                                    编辑
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="align-center align-middle">
+                                                                <label class="pos-rel">
+                                                                    <input type="checkbox" class="ace">
+                                                                    <span class="lbl"></span>
+                                                                </label>
+                                                            </td>
+                                                            <td class="align-middle">起点男生</td>
+                                                            <td class="align-middle">倚天屠龙记</td>
+                                                            <td class="align-middle">98765432101234567</td>
+                                                            <td class="align-middle">0</td>
+                                                            <td class="align-middle">否</td>
+                                                            <td class="align-middle">2006-06-06 23:15:46</td>
+                                                            <td class="align-center">
+                                                                <button data-toggle="dropdown" class="btn btn-primary btn-white" data-tid="3">
+                                                                    <i class="ace-icon fa fa-edit"></i>
+                                                                    编辑
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="align-center align-middle">
+                                                                <label class="pos-rel">
+                                                                    <input type="checkbox" class="ace">
+                                                                    <span class="lbl"></span>
+                                                                </label>
+                                                            </td>
+                                                            <td class="align-middle">起点女生</td>
+                                                            <td class="align-middle">甄嬛传</td>
+                                                            <td class="align-middle">98765432101234567</td>
+                                                            <td class="align-middle">0</td>
+                                                            <td class="align-middle">否</td>
+                                                            <td class="align-middle">2006-06-06 23:15:46</td>
+                                                            <td class="align-center">
+                                                                <button data-toggle="dropdown" class="btn btn-primary btn-white" data-tid="4">
+                                                                    <i class="ace-icon fa fa-edit"></i>
+                                                                    编辑
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    <ul class="pagination pull-right">
+                                                        <li><span>3 条记录 1/1 页</span></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="menu-detail1" class="tab-pane">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <button class="btn btn-sm btn-info">
+                                                        <i class="ace-icon fa fa-backward"></i>
+                                                        返回列表
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <h2 class="header smaller">
+                                                作品详情
+                                            </h2>
+                                            <h4 class="header smaller blue">
+                                                <i class="ace-icon fa fa-info"></i>
+                                                基本信息
+                                            </h4>
+                                            <div class="col-xs-12 no-padding">
+                                                <div class="form-group col-sm-12 no-padding">
+                                                    <label class="control-label col-sm-2 no-padding-left">作品名</label>
+                                                    <div class="col-md-8 no-padding-left">
+                                                        <input type="text" class="width-100 input-sm">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-sm-12 no-padding">
+                                                    <label class="control-label col-sm-2 no-padding-left">CBID</label>
+                                                    <div class="col-md-8 no-padding-left">
+                                                        <input type="text" class="width-100 input-sm">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-sm-12 no-padding">
+                                                    <label class="control-label col-sm-2 no-padding-left">作者名</label>
+                                                    <div class="col-md-8 no-padding-left">
+                                                        <input type="text" class="width-100 input-sm">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="menu-detail2" class="tab-pane">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <button class="btn btn-sm btn-info" id="back_list">
+                                                        <i class="ace-icon fa fa-backward"></i>
+                                                        返回列表
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <h2 class="header smaller">
+                                                作品详情
+                                            </h2>
+                                            <h4 class="header smaller blue">
+                                                <i class="ace-icon fa fa-info"></i>
+                                                基本信息
+                                            </h4>
+                                            <div class="col-xs-12 no-padding">
+                                                <div class="form-group col-sm-12 no-padding">
+                                                    <label class="control-label col-sm-2 no-padding-left">作品名</label>
+                                                    <div class="col-md-8 no-padding-left">
+                                                        <input type="text" class="width-100 input-sm" value="物种起源" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-sm-12 no-padding">
+                                                    <label class="control-label col-sm-2 no-padding-left">CBID</label>
+                                                    <div class="col-md-8 no-padding-left">
+                                                        <input type="text" class="width-100 input-sm" value="12345678906543217" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-sm-12 no-padding">
+                                                    <label class="control-label col-sm-2 no-padding-left">作者名</label>
+                                                    <div class="col-md-8 no-padding-left">
+                                                        <input type="text" class="width-100 input-sm" value="康斯坦丁" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="menu-detail3" class="tab-pane">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <button class="btn btn-sm btn-info" id="back_list">
+                                                        <i class="ace-icon fa fa-backward"></i>
+                                                        返回列表
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <h2 class="header smaller">
+                                                作品详情
+                                            </h2>
+                                            <h4 class="header smaller blue">
+                                                <i class="ace-icon fa fa-info"></i>
+                                                基本信息
+                                            </h4>
+                                            <div class="col-xs-12 no-padding">
+                                                <div class="form-group col-sm-12 no-padding">
+                                                    <label class="control-label col-sm-2 no-padding-left">作品名</label>
+                                                    <div class="col-md-8 no-padding-left">
+                                                        <input type="text" class="width-100 input-sm" value="倚天屠龙记" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-sm-12 no-padding">
+                                                    <label class="control-label col-sm-2 no-padding-left">CBID</label>
+                                                    <div class="col-md-8 no-padding-left">
+                                                        <input type="text" class="width-100 input-sm" value="12345678906543217" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-sm-12 no-padding">
+                                                    <label class="control-label col-sm-2 no-padding-left">作者名</label>
+                                                    <div class="col-md-8 no-padding-left">
+                                                        <input type="text" class="width-100 input-sm" value="康斯坦丁" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="menu-detail4" class="tab-pane">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <button class="btn btn-sm btn-info" id="back_list">
+                                                        <i class="ace-icon fa fa-backward"></i>
+                                                        返回列表
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <h2 class="header smaller">
+                                                作品详情
+                                            </h2>
+                                            <h4 class="header smaller blue">
+                                                <i class="ace-icon fa fa-info"></i>
+                                                基本信息
+                                            </h4>
+                                            <div class="col-xs-12 no-padding">
+                                                <div class="form-group col-sm-12 no-padding">
+                                                    <label class="control-label col-sm-2 no-padding-left">作品名</label>
+                                                    <div class="col-md-8 no-padding-left">
+                                                        <input type="text" class="width-100 input-sm" value="甄嬛传" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-sm-12 no-padding">
+                                                    <label class="control-label col-sm-2 no-padding-left">CBID</label>
+                                                    <div class="col-md-8 no-padding-left">
+                                                        <input type="text" class="width-100 input-sm" value="12345678906543217" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-sm-12 no-padding">
+                                                    <label class="control-label col-sm-2 no-padding-left">作者名</label>
+                                                    <div class="col-md-8 no-padding-left">
+                                                        <input type="text" class="width-100 input-sm" value="康斯坦丁" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-16"></div>
+            <div class="row" id="actions-notice">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">提示条</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    一些提交后无需引起页面变化的用户操作，应有操作成功或失败的提示条，使用gui.info方法。
+                                </p>
+                                <p class="lighter line-height-125 text-primary">
+                                    一些轻量级的错误，如搜索内容为空、批量操作未勾选条目等，也建议以提示条予以警示，使用gui.error方法。
+                                </p>
+                                <p class="lighter line-height-125 text-primary">
+                                    提示条两秒后会自动消失，所以提示内容不宜过长或过复杂。
+                                </p>
+                            </blockquote>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <button class="btn btn-info" id="notice_success">
+                                                正确提示
+                                            </button>
+                                            <button class="btn btn-danger" id="notice_error">
+                                                错误提示
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="space-16"></div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <pre class="prettyprint linenums">gui.info('这是操作成功的提示！');
+
+gui.error('这是出现报错的提示！');</pre>
+                                        </div>
+                                    </div>
+                                    <div class="space-20"></div>
+                                    <h4 class="header">
+                                        应用实例
+                                    </h4>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <label class="align-middle control-label">CBID：</label>
+                                            <input type="text" class="align-middle width-40 input-sm" placeholder="输入需要刷新的作品的CBID" id="refresh_id">
+                                            <button class="btn btn-info btn-xs" id="refresh_btn">
+                                                <i class="ace-icon fa fa-refresh"></i>
+                                                刷新
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="space-10"></div>
+                                    <p class="text-info">注：每次操作5秒后才能再次操作。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-16"></div>
+            <div class="row" id="actions-alert">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">警告框</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    一些内容较长或格式相对复杂的的通知消息、错误提示等，采取警告框的形式弹出提示用户，使用gui.alert方法。
+                                </p>
+                                <p class="lighter line-height-125 text-primary">
+                                    该方法有两个参数，第一个参数是警告消息（可用html标签、必传），第二个参数是点击确认按钮后的回调。
+                                </p>
+                            </blockquote>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <button class="btn btn-info" id="alert_1">
+                                                警告框
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="space-16"></div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <pre class="prettyprint linenums">
+gui.alert('这是操作成功的提示！'，function(){
+    console.log('这是个回调函数');
+});</pre>
+                                        </div>
+                                    </div>
+                                    <div class="space-16"></div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <button class="btn btn-info" id="alert_2">
+                                                带html的错误消息警告框
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="space-16"></div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <pre class="prettyprint linenums">
+var msg = 'lt;div class="error-container"&gt;' +
+    '&lt;h1 class="grey lighter smaller"&gt;操作失败！&lt;/h1&gt;' +
+    '&lt;hr&gt;' +
+    '&lt;h3 class="lighter smaller"&gt;' +
+    '&lt;span class="blue"&gt;' +
+    '&lt;i class="ace-icon fa  fa-comment-o"&gt;&lt;/i&gt; ' +
+    '&lt;/span&gt;' +
+    '请尝试以下操作：' +
+    '&lt;/h3&gt;' +
+    '&lt;div class="space_10"&gt;&lt;/div&gt;' +
+    '&lt;div class="row"&gt;' +
+    '&lt;ul class="list-unstyled spaced inline bigger-110 margin-15"&gt;' +
+    '&lt;li&gt;' +
+    '&lt;i class="ace-icon fa fa-hand-o-right blue"&gt;&lt;/i&gt; ' +
+    '&lt;a href="mailto:test@example.com"&gt;联系我们&lt;/a&gt;反馈您的问题' +
+    '&lt;/li&gt;' +
+    '&lt;li&gt;' +
+    '&lt;i class="ace-icon fa fa-hand-o-right blue"&gt;&lt;/i&gt; ' +
+    '找到部门对应权限管理人员开通权限' +
+    '&lt;/li&gt;' +
+    '&lt;/ul&gt;' +
+    '&lt;/div&gt;' +
+    '&lt;/div&gt;';
+gui.alert(msg);</pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-16"></div>
+            <div class="row" id="actions-dialog">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">对话框</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    危险性操作需要用户二次确认，使用gui.confirm方法创建一个简单的双选对话框。
+                                </p>
+                                <p class="lighter line-height-125 text-primary">
+                                    gui.confirm方法拥有3个参数，第一个参数是对话消息（可用html标签、必传），第二个参数是点击确认按钮后的回调，第三个参数是点击取消按钮后的回调。
+                                </p>
+                            </blockquote>
+                            <div class="space"></div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <button class="btn btn-info" id="confirm_dialog">
+                                                确认对话框
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="space-16"></div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <pre class="prettyprint linenums">
+gui.confirm('确认删除所选的敏感词吗？', function() {
+    gui.info('已成功删除4条记录！');
+});</pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    比较复杂的对话框，建议使用<a href="http://bootboxjs.com/documentation.html#dialog-options">bootbox.dialog</a>。
+                                </p>
+                            </blockquote>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <button class="btn btn-info" id="complex_dialog">
+                                                复杂对话框
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="space-16"></div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <pre class="prettyprint linenums">
+$('#complex_dialog').click(function() {
+    bootbox.dialog({
+        title: '&lt;h2 class="align-center"&gt;请先登录账号&lt;/h2&gt;',
+        message: '&lt;div&gt;' +
+        '&lt;label for="form-field-8"&gt;账号&lt;/label&gt;' +
+        '&lt;input type="text" class="form-control" placeholder="邮箱/手机号"&gt;' +
+        '&lt;div class="space"&gt;&lt;/div&gt;' +
+        '&lt;label for="form-field-8"&gt;密码&lt;/label&gt;' +
+        '&lt;input type="password" class="form-control"&gt;' +
+        '&lt;/div&gt;',
+        buttons: {
+            cancel: {
+                label: '取消',
+                className: 'btn-white'
+            },
+            confirm: {
+                label: "登录",
+                className: "btn-primary btn-sm",
+                callback: function() {
+                    gui.info('登录成功！');
+                }
+            }
+        }
+    });
+});</pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2><a id="conclusion"></a>结语</h2>
+            <hr>
+            <div class="well" id="conclusion-content">
+                <p class="lead">
+                    本文档提供部分参考，开发中需根据实际情况进行调整。如需求方提出怪异的需求，建议以产品给出的设计为准。
+                </p>
+                <p class="lead">
+                    表单的提交推荐使用ajax，这样做有很多好处：
+                </p>
+                <ul>
+                    <li>第一，避免全页面刷新，显得更流畅</li>
+                    <li>第二，使用固定格式返回结果，可以更清晰的查问题，而且容易处理错误</li>
+                    <li>第三，便于错误信息展示，可以用警示条、弹框等形式展示，对用户更友好</li>
+                </ul>
+                <p class="lead">
+                    js代码中有很多冗余的代码，一些常用弹框、组件等可以采集下大家的意见，适当封装一下。
+                </p>
+                <p class="lead">
+                    有些地方的代码有bug（如项目目录里gui.info组件样式错误），或插件、库类版本不兼容，建议做一下code review和优化。
+                </p>
+                <p class="lead">
+                    css文件如下：
+                </p>
+                <pre class="prettyprint linenums">
+&lt;link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css"&gt;
+&lt;link rel="stylesheet" type="text/css" href="static/css/ace.min.css"&gt;
+&lt;link rel="stylesheet" type="text/css" href="static/css/jquery.loadmask.spin.css"&gt;&lt;!--加载动画--&gt;
+&lt;link rel="stylesheet" type="text/css" href="static/css/chosen.css"&gt;&lt;!--多选文本框--&gt;
+&lt;link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css"&gt;&lt;!--图标字体--&gt;
+&lt;link rel="stylesheet" type="text/css" href="static/css/prettify.css"&gt;&lt;!--代码美化--&gt;
+&lt;link rel="stylesheet" type="text/css" href="static/css/datepicker.css"&gt;&lt;!--日期组件--&gt;
+&lt;link rel="stylesheet" type="text/css" href="static/css/bootstrap-duallistbox.css"&gt;&lt;!--复选列表组件--&gt;
+                </pre>
+                <p class="lead">
+                    js的加载有先后顺序要求，否则会引起冲突，文件如下：
+                </p>
+                <pre class="prettyprint linenums">
+&lt;script type="text/javascript" src="static/js/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="static/js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="static/js/fuelux.js"&gt;&lt;/script&gt;&lt;!--数字选择框spinner依赖--&gt;
+&lt;script type="text/javascript" src="static/js/bootbox.js"&gt;&lt;/script&gt;&lt;!--对话框--&gt;
+&lt;script type="text/javascript" src="static/js/jquery.gritter.js"&gt;&lt;/script&gt;&lt;!--自动消失的提示条--&gt;
+&lt;script type="text/javascript" src="static/js/bootstrap-datepicker.js"&gt;&lt;/script&gt;&lt;!--日期选择器，必须放在fuelux之后，否则会冲突--&gt;
+&lt;script type="text/javascript" src="static/js/bootstrap-datepicker.zh-CN.js"&gt;&lt;/script&gt;&lt;!--日期选择器本地化--&gt;
+&lt;script type="text/javascript" src="static/js/spin.min.js"&gt;&lt;/script&gt;&lt;!--转菊花--&gt;
+&lt;script type="text/javascript" src="static/js/jquery.loadmask.spin.js"&gt;&lt;/script&gt;&lt;!--加载动画--&gt;
+&lt;script type="text/javascript" src="static/js/chosen.jquery.js"&gt;&lt;/script&gt;&lt;!--对话框--&gt;
+&lt;script type="text/javascript" src="static/js/jquery.bootstrap-duallistbox.js"&gt;&lt;/script&gt;&lt;!--双列多选列表--&gt;
+
+&lt;script type="text/javascript" src="static/js/ace.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="static/js/ace-elements.js"&gt;&lt;/script&gt;&lt;!--ace组件--&gt;
+
+&lt;script type="text/javascript" src="static/js/jquery.scrollUp.min.js"&gt;&lt;/script&gt;&lt;!--滚到顶部--&gt;
+&lt;script type="text/javascript" src="static/js/common.js"&gt;&lt;/script&gt;&lt;!--综合后台库类js--&gt;
+&lt;script type="text/javascript" src="static/js/prettify.js"&gt;&lt;/script&gt;&lt;!--代码美化--&gt;
+&lt;script type="text/javascript" src="static/js/doc.js"&gt;&lt;/script&gt;&lt;!--本文档专属js--&gt;
+                </pre>
+            </div>
+            <h2><a id="reference"></a>参考文档</h2>
+            <hr>
+            <ul id="reference-link">
+                <li><a href="http://v3.bootcss.com/" target="_blank">Bootstrap v3 中文文档</a></li>
+                <li><a href="https://summer-blog.b0.upaiyun.com/WB0B30DGR/html/index.html" target="_blank">Ace Admin开发文档</a></li>
+                <li><a href="http://bootboxjs.com/documentation.html" target="_blank">bootboxjs开发文档</a></li>
+                <li><a href="http://bootstrap-datepicker.readthedocs.io/en/latest/" target="_blank">datepicker组件</a></li>
+                <li><a href="https://harvesthq.github.io/chosen/" target="_blank">多选框组件</a></li>
+            </ul>
+            <p>By liuqiang@yuewen.com # Version 2017.06.01</p>
+        </div>
+        </div>
+    </div>
+</div>
+<div class="loading-dialog" id="loading_dialog" style="display:none;">
+    <div class="loading-mask"></div>
+    <div class="loading-gif"></div>
+</div>
+<script type="text/javascript" src="static/js/jquery.min.js"></script>
+<script type="text/javascript" src="static/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="static/js/fuelux.js"></script><!--数字选择框spinner依赖-->
+<script type="text/javascript" src="static/js/bootbox.js"></script><!--对话框-->
+<script type="text/javascript" src="static/js/jquery.gritter.js"></script><!--自动消失的提示条-->
+<script type="text/javascript" src="static/js/bootstrap-datepicker.js"></script><!--日期选择器，必须放在fuelux之后，否则会冲突-->
+<script type="text/javascript" src="static/js/bootstrap-datepicker.zh-CN.js"></script><!--日期选择器本地化-->
+<script type="text/javascript" src="static/js/spin.min.js"></script><!--转菊花-->
+<script type="text/javascript" src="static/js/jquery.loadmask.spin.js"></script><!--加载动画-->
+<script type="text/javascript" src="static/js/chosen.jquery.js"></script><!--对话框-->
+<script type="text/javascript" src="static/js/jquery.bootstrap-duallistbox.js"></script><!--双列多选列表-->
+
+<script type="text/javascript" src="static/js/ace.min.js"></script>
+<script type="text/javascript" src="static/js/ace-elements.js"></script><!--ace组件-->
+
+<script type="text/javascript" src="static/js/jquery.scrollUp.min.js"></script><!--滚到顶部-->
+<script type="text/javascript" src="static/js/common.js"></script><!--综合后台库类js-->
+<script type="text/javascript" src="static/js/prettify.js"></script><!--代码美化-->
+<script type="text/javascript" src="static/js/doc.js"></script><!--本文档专属js-->
+</body>
+</html>

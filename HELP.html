@@ -1,0 +1,676 @@
+<!DOCTYPE HTML>
+<html>
+<header>
+    <meta charset="utf-8">
+    <title>综合后台代码规范</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="static/css/ace.min.css">
+    <link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css"><!--图标字体-->
+    <link rel="stylesheet" type="text/css" href="static/css/prettify.css"><!--代码美化-->
+    <style>
+        body {
+            position: relative;
+        }
+
+        .nav>li>a {
+            min-width: 180px;
+        }
+
+        .navbar .navbar-nav>li {
+            border-width: 0!important;
+        }
+
+        .nav>.active>a {
+            font-weight: 700;
+            color: #563d7c;
+            background-color: transparent;
+        }
+
+        .page-header h1 {
+            font-size: 40px;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        #scrollUp {
+            background-color: #777;
+            color: #eee;
+            font-size: 40px;
+            line-height: 1;
+            text-align: center;
+            text-decoration: none;
+            bottom: 20px;
+            right: 20px;
+            overflow: hidden;
+            width: 46px;
+            height: 46px;
+            border: none;
+            opacity: .8
+        }
+
+        #scrollUp:hover {
+            background-color: #333
+        }
+
+        @media screen and (min-width: 992px) {
+            #scrollUp {
+                bottom:100px
+            }
+        }
+    </style>
+</header>
+<body data-spy="scroll" data-target="#side_menu">
+<div class="navbar navbar-static-top-nav hidden-sm">
+    <div class="container">
+        <div class="navbar-header">
+            <nav class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active open"><a href="./代码规范文档.html" class="align-center">代码规范文档</a></li>
+                    <li><a href="./交互文档.html" class="align-center">交互文档</a></li>
+                    <li><a href="./js框架.html" class="align-center">js框架</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="main-container">
+    <div class="page-header">
+        <h1>综合后台代码规范</h1>
+    </div>
+    <div class="page-content">
+        <div class="row">
+        <div class="col-md-3">
+            <nav class="hidden-print hidden-xs hidden-sm affix-top" id="side_menu">
+                <ul class="nav">
+                    <li>
+                        <a href="#general">综合</a>
+                        <ul class="nav">
+                            <li><a href="#general-indent">缩进</a></li>
+                            <li><a href="#general-space">空格</a></li>
+                            <li><a href="#general-wrap">换行</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#name">命名</a>
+                        <ul class="nav">
+                            <li><a href="#name-general">命名</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#comment">注释</a>
+                        <ul class="nav">
+                            <li><a href="#comment-line">一般注释</a></li>
+                            <li><a href="#comment-doc">文档注释</a></li>
+                            <li><a href="#comment-where">推荐和不推荐的注释</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#other">其他</a>
+                        <ul class="nav">
+                            <li><a href="#other-loop">循环内查询问题</a></li>
+                            <li><a href="#other-sql">精确查询问题</a></li>
+                            <li><a href="#other-return">请求返回</a></li>
+                            <li><a href="#other-error">容错处理</a></li>
+                            <li><a href="#other-review">规范补充</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-md-9">
+            <h2><a id="general"></a>综合</h2>
+            <hr>
+            <div class="row" id="general-indent">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">缩进</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    缩进为四个字符宽度的空格。
+                                </p>
+                            </blockquote>
+                            <pre class="prettyprint linenums">
+foreach($list as $key => $value)
+{
+    if(strlen($value) > 0)
+    {
+        // code
+    }
+}
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-16"></div>
+            <div class="row" id="general-space">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">空格</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <ul>
+                                    <li class="lighter line-height-125 text-primary">
+                                        for循环分号后面
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        逗号后面（老外英文的书写习惯是标点后留一个空格，很多国人不清楚这一点）
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        各类运算符号（+，-，*，/，.，=）前后
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        方法定义的大括号前
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        js冒号后面
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        php数组箭头前后
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        一般情况下以上位置空格，其他地方不空格
+                                    </li>
+                                </ul>
+                            </blockquote>
+<pre class="prettyprint linenums">
+$arr = [
+    '1' => 'one',
+    '2' => 'two',
+];
+
+$isPaid = $money > 0 ? true : false;
+
+foreach($list as $key => $value)
+{
+    // code
+}
+
+for($i = 0; $i < 10; $i++)
+{
+    // code
+}
+
+if($type == 0 && $status == 1)
+{
+    $price = $price * 1.2 + 5;
+}
+elseif($type == 1)
+{
+    $price = $price * 1.3;
+}
+else
+{
+    continue;
+}
+
+function getTime() {
+    // code
+}
+
+var obj = {
+    id: 1324,
+    name: 'Hehe'
+}
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-16"></div>
+            <div class="row" id="general-wrap">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">换行</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    数组的每个键值对、过长的一行需要换行，其他不要求一致。
+                                </p>
+                            </blockquote>
+<pre class="prettyprint linenums">
+
+// 数组较多时每个值单独一行，看起来比较清晰。另外推荐用php5.4开始支持的方括号数组，写起来方便
+$keyArray = [
+    'key' => $value['key'],
+    'value' => $value['value'],
+    'detail' => $value['intro'],
+];
+$return = $this->getEncodeTextWithFlag(json_encode($keyArray), PROJECT_ENCODE_CONSTANT,
+    $value['publish_key'], $flag); // 方法、条件判断参数过长换行，代码宽度当行最长不超过120个字符
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2><a id="name"></a>命名</h2>
+            <hr>
+            <div class="row" id="name-general">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">命名</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <ul>
+                                    <li class="lighter line-height-125 text-primary">
+                                        最好的注释就是代码本身，命名尽量使用英文，与功能相关，不要拼错。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        变量名采用下划线或小驼峰，方法名采用小驼峰，类名推荐都使用大驼峰。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        常量全部用大写，中间如果是多个单词的常量名用下划线链接。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        Service和model里的类命名参数要加service和model标识。
+                                    </li>
+                                    <li class="lighter line-height-125 text-primary">
+                                        尽量使用add、set、get、edit、addXxxByYyy这种rest风格的命名。
+                                    </li>
+                                </ul>
+                            </blockquote>
+<pre class="prettyprint linenums">
+const DATABASE_OPTION;
+
+private $userOption;
+
+private $user_name;
+
+// 这是一个model里的类
+private $chapterModel;
+
+// 这是一个service里的类
+private $novelService;
+
+private function parseParam()
+{
+    // code...
+}
+
+public function addConnection($userOption)
+{
+    // code...
+}
+
+public function getAllConnections()
+{
+    // code...
+}
+
+public function getConnection()
+{
+    // code...
+}
+
+public function getConnectionById($id)
+{
+    // code...
+}
+</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2><a id="comment"></a>注释</h2>
+            <hr>
+            <div class="row" id="comment-line">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">一般注释</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    行注释对代码进行简短的说明。一般用于解释变量的含义用途、条件分支的判断依据、特殊常量的意义等。行注释根据长短情况置于需要解释的代码上方或后方。
+                                </p>
+                            </blockquote>
+                            <pre class="prettyprint linenums">
+private $bookStatus; // 书的编辑状态
+private $bookAuditStatus; // 书的审核状态
+
+// 当书名不为空且编辑状态为已完结且审核通过的时候，可以修改信息
+if(!empty($title) && $bookStatus == 1 && $bookAuditStatus == 10)
+{
+    // some code
+}
+
+switch($type)
+{
+    case -1: // 初始状态的处理规则
+        strategyOne();
+        break;
+    case 1: // 已完成状态的处理规则
+        strategyTwo();
+        break;
+    default: // 其他状态的处理规则
+        strategyDefault();
+        break;
+}
+                            </pre>
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    内容比较多的时候放在块注释里，块注释置于需要解释的代码上方。某些逻辑也可以用块注释“括起来”，这样显得更加清晰。
+                                </p>
+                            </blockquote>
+                            <pre class="prettyprint linenums">
+/* 本代码规范撰写于2017年7月3日以后
+主要的依据是平时大部分人的书写习惯和主流框架中的代码规范
+…… */
+
+/****** 处理策略开始 ******/
+if(!empty($title))
+{
+    strategy();
+    // code...
+}
+/****** 处理策略结束 ******/
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-16"></div>
+            <div class="row" id="comment-doc">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">文档注释</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    文档注释用于生产文档，某些编辑器可以出现对应代码提示，规范可参考javadoc格式，尽量为service和model的每个方法增加尽可能多的文档注释。
+                                </p>
+                            </blockquote>
+                            <pre class="prettyprint linenums">
+/**
+ * 根据用户的输入返回一个键值数组
+ *
+ * @author 王小明
+ * @since v20170703
+ * @link http://wiki.houtai.yuewen.com/doc/20170703
+ * @param $key int 被修改的键值
+ * @param $value string 用户输入的内容
+ * @return array|bool
+ */
+public function setValue($key, $value)
+{
+    if(!$key)
+    {
+        return false;
+    }
+    return [$key => $value];
+}
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-16"></div>
+            <div class="row" id="comment-where">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">推荐和不推荐的注释</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    action方法、一般方法、ThinkPhp加载库类函数加载出来的变量推荐注释（可以让phpStorm快速跳转到定义位置）
+                                </p>
+                            </blockquote>
+                            <pre class="prettyprint linenums">
+/**
+ * @var \Book\NovelService
+ */
+private $novelService;
+
+// 书籍分类首页面
+public function index()
+{
+    $this->display();
+}
+                            </pre>
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    明显不需要注释也能理解的代码、个人测试代码、已经废弃很久的代码、无意义的吐槽和不友好的注释不推荐留在代码里。
+                                </p>
+                            </blockquote>
+                            <pre class="prettyprint linenums">
+private $name; // 名字 =>【这个直接看命名就明白了】
+
+// 写这段代码的人真是个傻X，坑死爹了 => 【不应有无意义、带有侮辱性的吐槽】
+if(!empty($title) && $bookStatus == 1 && $bookAuditStatus == 10)
+{
+    //todo => 【todo会在某些编辑器报警告，不建议提交svn】
+}
+
+//switch($type)
+//{
+//    1+1 = 2;
+//} => 【已经很久不使用的代码请删掉，自己用的测试代码不要提交svn】
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-16"></div>
+            <h2><a id="other"></a>其他</h2>
+            <hr>
+            <div class="row" id="other-loop">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">循环内查询问题</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    要在循环里对数组的每个项进行数据库查询，这样每一次查询要再次建立http或tcp连接，非常耗时。mysql和solr都有in查询，合在一起查询能大幅缩减查询的开销（本人测试数据库的查询可提速5～10倍）。
+                                </p>
+                            </blockquote>
+<pre class="prettyprint linenums">
+// 如下是低效的查询，非常不推荐
+$datas = [];
+foreach($list as $val)
+{
+    $datas[] = $solrModel->get($val['title']);
+}
+
+// 如下是高效的查询
+$titleList = []; // 统一存放查询条件
+foreach($list as $val)
+{
+    $titleList[] = val['title']; // 循环获取查询条件
+}
+$datas = $solrModel->getList($titleList); // 最后统一查询
+</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-16"></div>
+            <div class="row" id="other-sql">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">代码层次问题</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    Controller层禁止直接调用Model，需要在Service内调用Model。
+                                </p>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-16"></div>
+            <div class="row" id="other-return">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">请求返回</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    thinkPHP内置了成功返回函数success和失败返回函数error，不要自己去构建，不要用alert和echo输出，也不要用其他格式输出，否则不方便统一处理。
+                                </p>
+                            </blockquote>
+<pre class="prettyprint linenums">
+/**
+ * 操作成功跳转的快捷方法
+ * @access protected
+ * @param string $message 提示信息
+ * @param string $jumpUrl 页面跳转地址
+ * @param mixed $ajax 是否为Ajax方式 当数字时指定跳转时间
+ * @return void
+ */
+protected function success($message = '', $jumpUrl = '', $ajax = false)
+{
+    // code...
+}
+
+// 用法1
+$this->success();
+// 前端返回{"info":"","status":1,"url":""}
+
+// 用法2
+$data = [
+    'count' => 1,
+    'list' => [
+        'title'=>'喜羊羊菊爆灰太狼'
+    ]
+];
+$this->success($data);
+// 前端返回{"info":{"count":1,"list":{"title":"\u559c\u7f8a\u7f8a\u83ca\u7206\u7070\u592a\u72fc"}},"status":1,"url":""}
+</pre>
+                            <div class="space-16"></div>
+<pre class="prettyprint linenums">
+/**
+ * 操作错误跳转的快捷方法
+ * @access protected
+ * @param string $message 错误信息
+ * @param string $jumpUrl 页面跳转地址
+ * @param mixed $ajax 是否为Ajax方式 当数字时指定跳转时间
+ * @return void
+ */
+protected function error($message = '', $jumpUrl = '', $ajax = false)
+{
+    // code...
+}
+
+// 用法
+$this->error('参数错误');
+// 前端返回{"info":"\u53c2\u6570\u9519\u8bef","status":0,"url":""}
+</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-16"></div>
+            <div class="row" id="other-error">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">容错处理</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    对有可能出现的数据库异常、非正常值进行容错处理，也不要把php的错误直接输出到页面上。建议所有报错都不直接输出给用户，增加一个调试参数，当url中有调试参数的时候才展示系统级别的报错。
+                                </p>
+                                <p class="lighter line-height-125 text-primary">
+                                    有的客户端可能有带xss注入的用户数据，需要兼容一下（比如使用htmlspecialchars函数），避免影响后台功能。
+                                </p>
+                                <p class="lighter line-height-125 text-primary">
+                                    很多ID超过了js的整形最大限制，会失真，在js中使用的时候应该以字符串的形式存在。
+                                </p>
+                                <p class="lighter line-height-125 text-primary">
+                                    if嵌套不要超过三级。
+                                </p>
+                                <p class="lighter line-height-125 text-primary">
+                                    ID生成器生成的ID需要判断是否为空。
+                                </p>
+                            </blockquote>
+<pre class="prettyprint linenums">
+// CBID有可能找不到，返回false（目前找不到数据库会直接抛出异常，建议修改底层库，或者增加try...catch模块）
+// 有的数据不分页会造成内存溢出或者504网关超时等情况
+$where = ['CBID' => 'xxxxxxx07'];
+$datas = $novelModel->where($where)->select();
+
+// foreach循环需要判断循环的是一个数组，也可以强转数组，不然会报php错误
+foreach((array)$datas as $val)
+{
+    $titles[] = $val['title'];
+}
+
+// empty函数判断对字符串'0'也返回false，但是某些时候用户的输入条件可能就是0
+if(empty($searchValue))
+{
+    // code...
+}
+
+// 用户输入的内容不完全可信，有时需要数字但可能输入的不是数字，要对特殊输入进行判断
+var price = parseInt('择天记');
+price > 0 // false
+price == 0 // false
+price < 0 // false
+isNaN(price) // true
+
+// js中使用变量时也要注意判断是否存在
+$('#link').attr('href').substr(0, 5); // Uncaught TypeError: Cannot read property 'substr' of undefined
+</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-16"></div>
+            <div class="row" id="other-review">
+                <div class="widget-box col-sm-10">
+                    <div class="widget-header widget-header-flat">
+                        <h4 class="widget-title smaller">规范补充</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <blockquote>
+                                <p class="lighter line-height-125 text-primary">
+                                    Log(操作日志)必须添加，且统一在service层添加。
+                                </p>
+                                <p class="lighter line-height-125 text-primary">
+                                    修改删除操作，需使用主键、唯一键删除，在service中封装方法，不得在controller里使用where语句批量操作。
+                                </p>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-16"></div>
+            <p>By liuqiang@yuewen.com # Version 2017.07.20</p>
+        </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="static/js/jquery.min.js"></script>
+<script type="text/javascript" src="static/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="static/js/ace.min.js"></script>
+<script type="text/javascript" src="static/js/ace-elements.js"></script><!--ace组件-->
+
+<script type="text/javascript" src="static/js/jquery.scrollUp.min.js"></script><!--滚到顶部-->
+<script type="text/javascript" src="static/js/prettify.js"></script><!--代码美化-->
+<script type="text/javascript" src="static/js/codedoc.js"></script><!--本文档专属js-->
+</body>
+</html>
